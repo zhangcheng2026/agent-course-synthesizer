@@ -1,57 +1,21 @@
-# Agent Course Synthesizer
+# Agent Course Synthesizer v0.2.0
 
-面向个人 Notion AI Agent 课程体系的**多课程知识综合 Skill**。将类似课程按主题进行交叉提取、去重、对比、课程重构和证据审查，输出简体中文 Step 复习笔记。
+面向 Notion 中多门 AI Agent 课程的主题融合与教学重构 Skill。
 
-## 当前状态
+## v0.2 的关键改变
 
-- v0.1.0：主 `SKILL.md` + 6 个核心 references 文件。
-- `examples/rag-validation.md`：已根据 Notion 的 **5 个课程来源**完成第一轮 RAG 主题抽样整合；**未覆盖全部 02–09**，未执行代码/性能基准。
-- 默认不修改任何 Notion 页面；需要用户指定 `create-new` 或 `update-existing` 后，才执行对应写入。
-- 仓库内容是独立编写的工作流规则，仅参考外部 Skills 的方法，并非它们的衍生镜像。
+旧版擅长来源核查、Claim 记录和去重，但容易把长矩阵和审计附在 Step 正文后面。新版**分别生成教学正文和研究记录**，二者通过 Notion 链接和 Claim ID 连接；新增案例驱动、渐进式术语、知识边界、减少重复讲解和首次读者模拟审查。
 
 ## 目录
 
-```
-SKILL.md
-references/
-  01-source-extraction.md
-  02-knowledge-synthesis.md
-  03-deduplication-and-evidence.md
-  04-curriculum-design.md
-  05-notion-output-template.md
-  06-quality-control.md
-examples/
-  rag-validation.md
-tests/
-  validate_structure.py
-```
+- SKILL.md：入口与七阶段方法
+- references/01–06：来源、综合、去重、课程设计、Notion 模板、发布/质量
+- references/07-reader-validation.md：新增读者模拟与 Step 回归标准
+- examples/rag-validation.md：v0.1 抽样 RAG 样本（原文件保持不变）
+- tests/validate_structure.py：结构测试
 
-## 在 Agent Skills 客户端中使用
+## 使用示例
 
-把整个仓库目录置于支持 Agent Skills 的客户端可访问的 skills 目录中，使客户端识别仓库根目录的 `SKILL.md`。也可把目录重命名成 `agent-course-synthesizer`。**放到 GitHub 不代表 ChatGPT 自动安装该 Skill**；只有在使用环境能读取它时，才会按其规则运行。Notion 读取/写入必须依赖已有连接工具权限。
+> 请读取 GitHub 仓库 agent-course-synthesizer 的 v0.2 SKILL.md 与 references。整合 Notion 02–09 对应 Step 2 的相关章节，目标是 01｜AI Agent 学习体系与项目实践 / Step 2。mode=update-existing，depth=balanced，delivery=dual。先保存旧版快照，在关联研究页保留完整 Claim/来源/审计，再把 Step 2 正文改成以订单查询贯穿的案例驱动课程。读者审核与证据审核通过后发布并回读。
 
-示例指令：
-
-```
-使用 agent-course-synthesizer：
-主题：RAG；源：Notion 02–09 中含 RAG 的章节；
-目标：01 | AI Agent｜学习体系与项目实践 / Step 10。
-模式：draft；深度：balanced。
-先提交来源清单和缺口，随后给原子观点矩阵与紧凑课程草稿。
-未明确要求写入前，不修改原来的 Step 10。
-```
-
-## 上游方法参考
-
-- [Research Synthesis — SkillMedev](https://github.com/SkillMedev/skills/tree/main/skills/research-synthesis)
-- [Knowledge Synthesis — Anthropic](https://github.com/anthropics/knowledge-work-plugins/tree/main/enterprise-search/skills/knowledge-synthesis)
-- [Education Agent Skills — Gareth Manning](https://github.com/GarethManning/education-agent-skills)
-
-仅借鉴“原子知识、聚类、分歧、去重、来源、知识依赖、学习目标”等方法，不直接复制上游 `SKILL.md` 原文。上游项目的许可证与适用约束应分别遵守。
-
-## 维护路线
-
-1. 补完 02–09 的 RAG 主题来源清单并做章节级覆盖核查。
-2. 针对 RAG 补充可运行的 `retrieval / generation / evaluation` 最小案例，并记录依赖版本。
-3. 完成 Notion 新稿页的人工审阅，再由用户明确授权更新 Step 10。
-4. 复用同一流程验证 Memory、MCP、Context Engineering。
+仓库托管不等于客户端已安装 Skill；Notion/GitHub 访问与写入取决于账号连接权限。v0.1 留在 Git 历史，旧 RAG 示例仍是历史研究样本，不能被冒认为完整八门来源或新版正文模板。
