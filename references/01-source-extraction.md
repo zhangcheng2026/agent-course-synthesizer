@@ -1,37 +1,32 @@
-# 01｜资料发现与原子知识提取
+# 01｜来源发现、覆盖状态与原子 Claim
 
-## 范围与读取
+## 两类覆盖必须分开
 
-1. 先定位用户指定的 01–09 课程根页面，确认实际页面隶属关系。不得把同名搜索结果直接当作目标教材；必要时从课程根页沿子页定位。
-2. 对每个命中的章节获取完整正文、嵌套子页面和代码/图表的文字说明。记录读取时间、页面 URL、标题、章节路径、是否截断、是否有不可读附件。
-3. 限定主题的选取标准：明确相关的定义、机制、条件、实验、指标、架构、反例；外围提及不等于系统覆盖。
-4. 不盲目外扩全部课程。标记每个来源：`read_complete` / `read_partial` / `not_found` / `not_in_scope`。未读章节不能参与“已覆盖”统计。
+单页 Notion fetch 完整、没有截断，只能证明**该次页面文本读取完成**。要宣称课程主题覆盖完整，还需要确认相关子页、图片、代码、笔记与附件。采用 read_complete / read_partial / not_found / not_in_scope，注明选取范围、未读章节和限制。八门课程读取 15 个选定页面不等于读完八门课程。
 
-## 原子 claim 的最小字段
+每条来源记录：课程根页、标题、精确 URL、章节小节锚点、读取日期、文本截断与附件情况、source_voice（original/translation/learner_notes/synthesizer/external_check）、independence_group、技术版本。
 
-```yaml
-claim_id: RAG-001
-concept: RAG/检索与生成
-type: definition  # definition | mechanism | method | tradeoff | example | metric | caution
-claim: "先检索外部相关片段，再作为上下文供生成器使用。"
-qualifiers: "典型检索增强生成路径；工具型 Agentic RAG 可反复检索"
+## 原子 Claim 格式
+
+~~~yaml
+claim_id: STEP2-001
+concept: Agent Loop
+type: mechanism
+claim: 工具结果反馈影响下一轮动态决策
+qualifiers: 典型动态 Agent Loop，不代表所有固定 Workflow
 source:
-  course: "具体课程名"
-  page_title: "具体章节名"
-  page_url: "Notion 页面 URL"
-  anchor: "章节标题或短的原文定位"
-independence_group: "original-course-branch"
-confidence: supported # supported | tentative | conflicted | unverified
-```
+  course: 实际课程
+  page_title: 完整章节名
+  page_url: Notion 页面 URL
+  anchor: 相关小节标题
+source_voice: original
+independence_group: original-course-branch
+framework_version: null
+confidence: supported
+~~~
 
-## 提取规范
-
-- 一条 claim 不得同时混合“是什么、为什么、怎么做、是否最好”。
-- 同一段可拆多个原子知识单元；主张和例子关联，例子不能冒充普遍规律。
-- 标记 `source_voice`：原课程作者 / 译者或用户笔记 / 汇编者额外补充 / 外部核验。不同声音不得互相假冒。
-- 将代码片段摘要为输入、处理、输出、框架/版本、复现条件，必要时附原文链接；不从未经执行的示例推导运行成功。
-- `extraction_log` 标记未覆盖页、异常、潜在过时 API 和需要人工确认的问题。
+一条 Claim 不能混合定义、优势、例子和性能判断。将输入/处理/输出、代码版本、真实执行情况单独记录。完整原子证据表放 Research Record；正文只引用重要小节，读者不必理解 Claim 编号才看懂课程。
 
 ## 出口验收
 
-至少能回答：“读了哪些页面？每页抽取了什么？哪个结论来自哪个具体位置？哪些页没有读全？”如任一无法回答，不能声明全覆盖。
+能解释读了哪些页面、具体读取边界、每条主张的来源、哪些未读取或未运行。资料不足时必须标 partial，不得宣称全量。
